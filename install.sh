@@ -3,7 +3,7 @@
 clear
 
 echo "===================================="
-echo "      HARTLEVEM INSTALLER"
+echo "      HARTLEVEM INSTALLER v2.1"
 echo "===================================="
 echo
 
@@ -13,28 +13,14 @@ pkg install -y git bash coreutils figlet >/dev/null 2>&1
 
 chmod +x *.sh 2>/dev/null
 
-CONFIG="$HOME/.hartlevem"
-mkdir -p "$CONFIG"
+mkdir -p "$HOME/.hartlevem"
+touch "$HOME/.hartlevem/users.db"
 
 echo
-read -p "Usuario: " USER
+echo "[*] Creando el primer usuario..."
+echo
 
-while true
-do
-    read -s -p "Contraseña: " PASS
-    echo
-    read -s -p "Confirmar contraseña: " PASS2
-    echo
-
-    if [ "$PASS" = "$PASS2" ]; then
-        break
-    else
-        echo "❌ Las contraseñas no coinciden."
-    fi
-done
-
-echo "$USER" > "$CONFIG/user"
-printf "%s" "$PASS" | sha256sum | awk '{print $1}' > "$CONFIG/pass"
+bash register.sh
 
 cat > "$HOME/.bashrc" << 'EOF'
 clear
@@ -47,15 +33,12 @@ EOF
 
 echo
 echo "===================================="
-echo "      HARTLEVEM INSTALLER"
+echo "      INSTALACIÓN COMPLETADA"
 echo "===================================="
 echo
-echo "✔ Git instalado"
 echo "✔ Dependencias instaladas"
-echo "✔ Usuario creado"
-echo "✔ Contraseña creada"
+echo "✔ Sistema configurado"
+echo "✔ Usuario registrado"
 echo "✔ Inicio automático configurado"
 echo
-echo "Instalación completada."
-echo
-echo "Solo cierra y vuelve a abrir Termux."
+echo "Cierra Termux y vuelve a abrirlo."

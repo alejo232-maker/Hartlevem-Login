@@ -1,23 +1,27 @@
 #!/data/data/com.termux/files/usr/bin/bash
 
-CONFIG="$HOME/.hartlevem"
+DATA_DIR="$HOME/.hartlevem"
+USERS_DB="$DATA_DIR/users.db"
 
 clear
-echo "===================================="
-echo "      HARTLEVEM LOGIN v2.0"
-echo "===================================="
-echo
 
-if [ ! -f "$CONFIG/user" ] || [ ! -f "$CONFIG/pass" ]; then
-    echo "❌ No se encontró ninguna instalación."
+if [ ! -f "$USERS_DB" ]; then
+    echo "❌ No hay usuarios registrados."
     echo
-    echo "Ejecuta:"
-    echo "bash install.sh"
+    echo "Ejecuta: bash register.sh"
     exit 1
 fi
 
-USER_SAVED=$(cat "$CONFIG/user")
-PASS_HASH=$(cat "$CONFIG/pass")
+TOTAL=$(wc -l < "$USERS_DB")
+
+echo "===================================="
+echo "      HARTLEVEM LOGIN v2.1"
+echo "===================================="
+echo "📅 Fecha: $(date '+%d/%m/%Y')"
+echo "🕒 Hora : $(date '+%I:%M:%S %p')"
+echo "👥 Usuarios registrados: $TOTAL"
+echo "===================================="
+echo
 
 INTENTOS=0
 
@@ -29,12 +33,13 @@ do
 
     HASH=$(printf "%s" "$PASS" | sha256sum | awk '{print $1}')
 
-    if [ "$USER" = "$USER_SAVED" ] && [ "$HASH" = "$PASS_HASH" ]; then
+    if grep -q "^$USER:$HASH$" "$USERS_DB"; then
         clear
         echo "===================================="
         echo "✅ Bienvenido $USER"
         echo "===================================="
         sleep 1
+        export HARTLEVEM_USER="$USER"
         bash menu.sh
         exit
     else

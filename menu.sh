@@ -5,14 +5,19 @@ do
 clear
 
 echo "===================================="
-echo "        HARTLEVEM MENU"
+echo "      HARTLEVEM MENU v2.1"
 echo "===================================="
 echo
-echo "[1] Información"
-echo "[2] Actualizar"
-echo "[3] Créditos"
-echo "[0] Salir"
+echo "👤 Usuario : $HARTLEVEM_USER"
+echo "📅 Fecha   : $(date '+%d/%m/%Y')"
+echo "🕒 Hora    : $(date '+%I:%M:%S %p')"
 echo
+echo "===================================="
+echo "[1] Información"
+echo "[2] Registrar usuario"
+echo "[3] Actualizar"
+echo "[4] Créditos"
+echo "[0] Salir"
 echo "===================================="
 echo
 
@@ -27,13 +32,20 @@ echo "        INFORMACIÓN"
 echo "===================================="
 echo
 echo "Proyecto : Hartlevem Login"
-echo "Versión  : 2.0"
+echo "Versión  : 2.1"
 echo "Sistema  : Termux"
+echo "Usuario  : $HARTLEVEM_USER"
 echo
 read -p "Presiona ENTER para volver..."
 ;;
 
 2)
+bash register.sh
+echo
+read -p "Presiona ENTER para volver..."
+;;
+
+3)
 clear
 echo "Buscando actualizaciones..."
 git pull
@@ -41,7 +53,7 @@ echo
 read -p "Presiona ENTER para volver..."
 ;;
 
-3)
+4)
 clear
 echo "===================================="
 echo "          CRÉDITOS"
